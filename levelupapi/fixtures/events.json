@@ -1,0 +1,14 @@
+[
+    {
+        "model": "levelupapi.event",
+        "pk": 1,
+        "fields": {
+            "organizer": 1,
+            "name": "",
+            "date": "2023-02-16",
+            "location": "Your Mom's House",
+            "game": 2
+
+        }
+    }
+]
