@@ -4,7 +4,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from levelupapi.models import Event
-from levelupapi.models import Gamer
+from levelupapi.models import Gamer, Game, gamer
 
 
 class EventView(ViewSet):
@@ -46,6 +46,20 @@ class EventView(ViewSet):
         }
     }
 ]
+    def create(self, request):
+
+        gamer = Gamer.objects.get(user=request.auth.user)
+        game = Game.objects.get(pk=request.data["game"])
+
+        event = Event.objects.create(
+            organizer=gamer,
+            name=request.data["name"],
+            date=request.data["date"],
+            location=request.data["location"],
+            game=game
+            )
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
 
     def list(self, request):
         """Handle GET requests to get all event
