@@ -28,11 +28,9 @@ class GameView(ViewSet):
         name=request.data["name"],
         description=request.data["description"],
         genre=genre
-
     )
         serializer = GameSerializer(game)
-        return Response(serializer.data)
-
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class GameSerializer(serializers.ModelSerializer):
     """JSON serializer for game
@@ -40,3 +38,4 @@ class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ('id', 'name', 'description', 'genre' )
+        depth= 1
