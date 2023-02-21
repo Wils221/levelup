@@ -15,37 +15,6 @@ class EventView(ViewSet):
         serializer = EventSerializer(event)
         return Response(serializer.data)
 
-
-    def list(self, request):
-        [
-    {
-        "model": "levelupapi.game",
-        "pk": 1,
-        "fields": {
-            "name": "Monopoly",
-            "description": "Game that teaches you about capitalism",
-            "genre": 1
-        }
-    },
-    {
-        "model": "levelupapi.game",
-        "pk": 2,
-        "fields": {
-            "name": "Dungeons & Dragon",
-            "description": "Dungeons & Dragons is a fantasy tabletop role-playing game originally designed by Gary Gygax and Dave Arneson.",
-            "genre": 2
-        }
-    },
-    {
-        "model": "levelupapi.game",
-        "pk": 3,
-        "fields": {
-            "name": "World of Warcraft",
-            "description": "World of Warcraft is a massively multiplayer online role-playing game released in 2004 by Blizzard Entertainment.",
-            "genre": 3
-        }
-    }
-]
     def create(self, request):
 
         gamer = Gamer.objects.get(user=request.auth.user)
