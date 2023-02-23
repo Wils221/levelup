@@ -33,15 +33,18 @@ class EventView(ViewSet):
     def update(self, request, pk):
 
 
-        game = Game.objects.get(pk=pk)
-        game.title = request.data["title"]
-        game.maker = request.data["maker"]
-        game.number_of_players = request.data["number_of_players"]
-        game.skill_level = request.data["skill_level"]
+        event = Event.objects.get(pk=pk)
+        event.name = request.data["name"]
+        event.date = request.data["date"]
+        event.location = request.data["location"]
 
-        game_type = GameType.objects.get(pk=request.data["game_type"])
-        game.game_type = game_type
-        game.save()
+        game = Game.objects.get(pk=request.data["game"])
+        event.game = game
+        event.save()
+
+        organizer = Gamer.objects.get(pk=request.data["organizer"])
+        event.organizer = organizer
+        event.save()
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
@@ -70,10 +73,23 @@ class EventView(ViewSet):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def destroy(self, request, pk):
+        event = Event.objects.get(pk=pk)
+        event.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+class GamerSerializer(serializers.ModelSerializer):
+    """JSON serializer for event
+    """
+    class Meta:
+        model = Gamer
+        fields = ('id', 'bio', 'full_name' )
 
 class EventSerializer(serializers.ModelSerializer):
     """JSON serializer for event
     """
+    organizer = GamerSerializer()
     class Meta:
         model = Event
         fields = ('id', 'organizer', 'name', 'date', 'location', 'game' )
+        depth = 1
